@@ -1,24 +1,29 @@
-import CartWidget from './CartWidget'
+import { NavLink, Link } from 'react-router-dom';
+import { CATEGORIES } from '../data/products';
 
-function NavBar() {
+const active = ({ isActive }) => ({
+  textDecoration: isActive ? 'underline' : 'none'
+});
+
+export default function NavBar() {
   return (
-    <header className="navbar">
-      <div className="navbar__logo">
-        {/* Logo de tu tienda */}
-        <a href="#" className="brand">MiTienda</a>
-      </div>
+    <header style={{ borderBottom: '1px solid #eee', marginBottom: 16 }}>
+      <nav className="container" style={{ display: 'flex', gap: 16, alignItems: 'center', padding: '12px 0' }}>
+        <Link to="/" style={{ fontWeight: 700 }}>MiTienda</Link>
 
-      <nav className="navbar__links">
-        <a href="#">Inicio</a>
-        <a href="#">Productos</a>
-        <a href="#">Contacto</a>
+        <div style={{ display: 'flex', gap: 12 }}>
+          {/* Menú de categorías dinámico (no crear rutas duplicadas por categoría) */}
+          {CATEGORIES.map(cat => (
+            <NavLink
+              key={cat}
+              to={cat === 'todos' ? '/' : `/category/${cat}`}
+              style={active}
+            >
+              {cat.toUpperCase()}
+            </NavLink>
+          ))}
+        </div>
       </nav>
-
-      <div className="navbar__cart">
-        <CartWidget />
-      </div>
     </header>
-  )
+  );
 }
-
-export default NavBar
